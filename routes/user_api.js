@@ -5,7 +5,7 @@ require('dotenv').config();
 const db = require('../middleware/db/user_api');
 
 const token = require('../middleware/token/token');
-const { verifyToken } = require('../middleware/token/jwt');
+const { verifyToken } = require('../middleware/token/check');
 module.exports = router;
 
 router.get('/test',async (req, res) => {
