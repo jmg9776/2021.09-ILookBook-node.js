@@ -22,10 +22,10 @@ const corsOptions = {
     }
     else if(origin==undefined){
       if (process.env.getAccess=='true') callback(null, true);
-      else callback(new Error("You cannot access Api"));
+      else callback(new Error("You cannot use Api"));
     }
     else{
-      callback(new Error("XSS detected : " + origin));
+      callback(new Error("You cannot use Api : " + origin));
     }
   }
 }

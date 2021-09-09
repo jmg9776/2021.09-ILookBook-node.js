@@ -1,9 +1,10 @@
 const config = {
-    host : '49.161.158.226',
+    host : 'localhost',
     user : 'root',
     password : 'root',
     port : 3306,
-    database : 'lostark',
+    database : 'root',
     connectionLimit : 10
 };
+
 module.exports = config;

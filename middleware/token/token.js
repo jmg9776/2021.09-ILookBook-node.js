@@ -1,8 +1,19 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-function make_token(uid, time)
-{
+function login_token(uid){
+    let act = make_token(uid,process.env.accessToken);
+    let rft = make_token(uid,process.env.refreshToken);
+
+    const res = {
+        message: 'success',
+        accessToken: act,
+        refreshToken: rft
+    }
+    return res;
+}
+
+function make_token(uid, time) {
     try {
         const token = jwt.sign({
             uid,
@@ -12,14 +23,15 @@ function make_token(uid, time)
         });
         return token;
     } catch (error) {
-        return 'error'
+        return 'error';
     }
 }
 
 function decryption(token){
-    let res
+    let res;
     try{
         res = jwt.verify(token, process.env.key);
+        return res;
     }catch (e){
         return e;
     }
@@ -27,3 +39,4 @@ function decryption(token){
 
 module.exports.mktoken = make_token;
 module.exports.decryption = decryption;
+module.exports.lgToken = login_token;
