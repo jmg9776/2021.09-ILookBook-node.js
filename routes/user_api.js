@@ -2,13 +2,23 @@ const express = require('express');
 const router = express.Router();
 require('dotenv').config();
 
-const db = require('../middleware/db/api');
+const db = require('../middleware/db/user_api');
 
 const token = require('../middleware/token/token');
 const { verifyToken } = require('../middleware/token/jwt');
 module.exports = router;
 
 router.get('/test',async (req, res) => {
+    const tk = req.query.token;
+    db.rfcheck(tk,function (err,data){
+        if(data[0].res!=0){
+            const uid = token.decryption(tk).uid;
+            res.json({message:"success", accessToken: token.mktoken(uid, process.env.accessToken)});
+        }else
+        {
+            res.json({message:"error", accessToken: 'Invalid token'});
+        }
+    });
 });
 
 router.get('/refresh', verifyToken, async (req, res) => {
@@ -16,10 +26,10 @@ router.get('/refresh', verifyToken, async (req, res) => {
     db.rfcheck(tk,function (err,data){
         if(data[0].res!=0){
             const uid = token.decryption(tk).uid;
-            res.json({accessToken: token.mktoken(uid, process.env.accessToken)});
+            res.json({message:"success", accessToken: token.mktoken(uid, process.env.accessToken)});
         }else
         {
-            res.json({accessToken: 'Invalid token'});
+            res.json({message:"error", accessToken: 'Invalid token'});
         }
     });
 });
@@ -38,11 +48,11 @@ router.get('/login', async (req, res) => {
             if (uid!=undefined){
                 const tk = token.lgToken(uid);
                 db.logtokenInsert(tk.refreshToken,function (err,data){
-                    res.json(tk);
+                    res.json({message:"success",accessToken:tk.accessToken, refreshToken:tk.refreshToken});
                 });
             }
             else{
-                res.json({message: 'login_fail'});
+                res.json({message: 'fail'});
             }
         });
     }

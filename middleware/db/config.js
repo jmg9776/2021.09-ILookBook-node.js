@@ -3,7 +3,7 @@ const config = {
     user : 'root',
     password : 'root',
     port : 3306,
-    database : 'root',
+    database : 'db',
     connectionLimit : 10
 };
 

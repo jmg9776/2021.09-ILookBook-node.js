@@ -42,11 +42,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //router require
 const indexRouter = require('./routes/index');
-const api = require('./routes/api');
+const user = require('./routes/user_api');
 
 //router setup
 app.use('/', indexRouter);
-app.use('/api', api);
+app.use('/user', user);
 app.use(function(req, res, next) {
   next(createError(404));
 });

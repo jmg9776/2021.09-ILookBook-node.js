@@ -1,5 +1,13 @@
 const db = require('./db');
 
+function sqlBuilder(sql, data){
+    let i;
+    for (i=0;i<data.length;i++){
+        sql = sql.replace('$'+i.toString(), JSON.stringify(data[i]));
+    }
+    return sql;
+}
+
 function ExecuteQuery(q, value, callback){
     try{
         db((err,connection)=> {
@@ -17,3 +25,4 @@ function ExecuteQuery(q, value, callback){
 }
 
 module.exports.ExcuteQuery = ExecuteQuery;
+module.exports.sqlBuilder = sqlBuilder;
