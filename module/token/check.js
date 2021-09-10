@@ -5,7 +5,7 @@ require('dotenv').config();
 exports.verifyToken = (req,res,next) =>{
     if (process.env.develop=="true") return next();
     try {
-        req.decode = check.verify(req.headers.authorization, process.env.key);
+        req.decryption = check.verify(req.headers.authorization, process.env.key);
         return next();
     }
     catch (error){
