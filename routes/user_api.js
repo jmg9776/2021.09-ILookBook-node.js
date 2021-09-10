@@ -2,41 +2,32 @@ const express = require('express');
 const router = express.Router();
 require('dotenv').config();
 
-const db = require('../middleware/db/user_api');
+const db = require('../module/db/user_api');
 
-const token = require('../middleware/token/token');
-const { verifyToken } = require('../middleware/token/check');
+const token = require('../module/token/token');
+const { verifyToken } = require('../module/token/check');
 module.exports = router;
 
-router.get('/test',async (req, res) => {
-    const tk = req.query.token;
-    db.rfcheck(tk,function (err,data){
-        if(data[0].res!=0){
-            const uid = token.decryption(tk).uid;
-            res.json({message:"success", accessToken: token.mktoken(uid, process.env.accessToken)});
-        }else
-        {
-            res.json({message:"error", accessToken: 'Invalid token'});
-        }
-    });
-});
-
 router.get('/refresh', verifyToken, async (req, res) => {
-    const tk = req.headers.authorization;
-    db.rfcheck(tk,function (err,data){
-        if(data[0].res!=0){
-            const uid = token.decryption(tk).uid;
-            res.json({message:"success", accessToken: token.mktoken(uid, process.env.accessToken)});
-        }else
-        {
-            res.json({message:"error", accessToken: 'Invalid token'});
-        }
-    });
+    let tk;
+    try{
+        if (process.env.develop == "true") tk = req.query.token;
+        else tk = req.headers.authorization;
+        db.rfcheck(tk,function (err,data){
+            if(data[0].res!=0){
+                const uid = token.decryption(tk).uid;
+                res.json({message:"success", accessToken: token.mktoken(uid, process.env.accessToken)});
+            }else
+            {
+                res.json({message:"error", accessToken: 'InvalidToken'});
+            }
+        });
+    }catch (e){
+        res.json({message:"error",data:e});
+    }
 });
 
-router.get('/login', async (req, res) => {
-    const id = req.query.id;
-    const pw = req.query.pw;
+function login(id, pw, res){
     let uid;
 
     if (id != undefined && pw != undefined
@@ -57,6 +48,18 @@ router.get('/login', async (req, res) => {
         });
     }
     else{
-        res.json()
+        res.json({message:"NoParameter"});
     }
+}
+router.get('/login', async (req, res) => {
+    if (process.env.develop == "true"){
+        try{
+            const id = req.query.id;
+            const pw = req.query.pw;
+            login(id,pw, res);
+        }catch (e){
+            res.json({message:"error",data:e})
+        }
+    }
+    res.json({message:"cannot use this api get method"});
 });

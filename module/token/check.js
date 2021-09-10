@@ -1,7 +1,9 @@
 const check = require('jsonwebtoken');
+require('dotenv').config();
 
 //토큰 유효성 검사
 exports.verifyToken = (req,res,next) =>{
+    if (process.env.develop=="true") return next();
     try {
         req.decode = check.verify(req.headers.authorization, process.env.key);
         return next();

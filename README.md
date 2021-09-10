@@ -21,3 +21,7 @@ try this : sudo npm install
 Please check .env setting
 
 <h3>License : Mit</h3>
+
+Api :
+<br>AccessToken : http://localhost:3000/user/refresh?token=
+LoginToken : http://localhost:3000/user/login?id=&pw=
