@@ -14,7 +14,7 @@ function ExecuteQuery(q, value, callback){
             connection.query(q, value, (err,rows)=>{
                 connection.release();
                 if(err){
-                    throw err;
+                    return callback(err, err);
                 }
                 return callback(err,rows);
             });

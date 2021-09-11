@@ -22,6 +22,6 @@ Please check .env setting
 
 <h3>License : Mit</h3>
 
-Api :
-<br>AccessToken : http://localhost:3000/user/refresh?token=
+Api Test : .env file develop="true"
+<br>AccessToken : http://localhost:3000/user/refresh?token= <br>
 LoginToken : http://localhost:3000/user/login?id=&pw=

@@ -8,20 +8,28 @@ const token = require('../module/token/token');
 const { verifyToken } = require('../module/token/check');
 module.exports = router;
 
+router.get('/about', verifyToken, async (req, res) => {
+    res.json(req.decryption);
+});
+
 router.get('/refresh', verifyToken, async (req, res) => {
     let tk;
     try{
-        if (process.env.develop == "true") tk = req.query.token;
+        if (process.env.test == "true") tk = req.query.token;
         else tk = req.headers.authorization;
-        db.rfcheck(tk,function (err,data){
-            if(data[0].res!=0){
-                const uid = token.decryption(tk).uid;
-                res.json({message:"success", accessToken: token.mktoken(uid, process.env.accessToken)});
-            }else
-            {
-                res.json({message:"error", accessToken: 'InvalidToken'});
-            }
-        });
+        if (tk!=undefined){
+            db.rfcheck(tk,function (err,data){
+                if(data[0].res!=0){
+                    const uid = token.decryption(tk).uid;
+                    res.json({message:"success", accessToken: token.mktoken(uid, process.env.accessToken)});
+                }else
+                {
+                    res.json({message:"error", accessToken: 'InvalidToken'});
+                }
+            });
+        }else{
+            res.json({message:"error", accessToken: 'NoToken'});
+        }
     }catch (e){
         res.json({message:"error",data:e});
     }
@@ -52,7 +60,7 @@ function login(id, pw, res){
     }
 }
 router.get('/login', async (req, res) => {
-    if (process.env.develop == "true"){
+    if (process.env.test == "true"){
         try{
             const id = req.query.id;
             const pw = req.query.pw;
@@ -61,5 +69,16 @@ router.get('/login', async (req, res) => {
             res.json({message:"error",data:e})
         }
     }
-    res.json({message:"cannot use this api get method"});
+    else{
+        res.json({message:"cannot use this api get method"});
+    }
+});
+router.post('/login', async (req, res) => {
+    try{
+        const id = req.body.id;
+        const pw = req.body.pw;
+        login(id,pw, res);
+    }catch (e){
+        res.json({message:"error",data:e})
+    }
 });
