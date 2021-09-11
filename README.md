@@ -5,7 +5,7 @@
 간단한 설명은 documents폴더를 참고해주세요.<br>
 Express와 vue의 연동을 가정하고 만들었습니다.<br>
 
-vue project git :
+vue project git : https://github.com/DARU970706/vue_template
 <h2>Need to install</h2>
 npm install cors<br>
 npm install dotenv<br>
