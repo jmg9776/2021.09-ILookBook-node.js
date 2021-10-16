@@ -4,6 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const app = express();
+
 require('dotenv').config();
 
 //bodyParser http post parse
@@ -11,10 +12,9 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extend:false}));
 app.use(bodyParser.json()); //vue.js post type json
 
-
 //whitelist setup xss. check .env file
 const cors = require("cors");
-const whitelist = [ "http://localhost:8080" ];  //insert your vue server setup
+const whitelist = [ "http://localhost:8080", "http://localhost:3000" ];  //insert your vue server setup
 const corsOptions = {
   origin: function (origin, callback){
     if (whitelist.indexOf(origin) !== -1) {
@@ -43,10 +43,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 //router require
 const indexRouter = require('./routes/index');
 const user = require('./routes/user_api');
+const fileSystem = require('./routes/img_api');
+const board = require('./routes/board_api')
 
 //router setup
 app.use('/', indexRouter);
 app.use('/user', user);
+app.use('/img', fileSystem);
+app.use('/board', board);
+
 app.use(function(req, res, next) {
   next(createError(404));
 });

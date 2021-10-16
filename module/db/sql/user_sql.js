@@ -1,5 +1,4 @@
-const db = require('./controller');
-const config = require('./config');
+const db = require('../controller');
 
 function refresh_check(token, callback){
     let query = 'select count(*) as res from ' + process.env.token + ' ' +
@@ -28,6 +27,17 @@ function loginCheck(id, pw, callback) {
     })
 }
 
+function createAccount(id, pw, email) {
+    let query = "insert INTO lookbook.lookbook_accounts_t (user_id, user_pw, user_email) " +
+        "VALUES($0, $1, $2)";
+    query = db.sqlBuilder(query,[id,pw,email]);
+
+    db.ExcuteQuery(query, [], function (err,data){
+        return;
+    })
+}
+
+module.exports.crAccount = createAccount;
 module.exports.logtokenInsert = login_Token_Insert;
 module.exports.loginCheck = loginCheck;
 module.exports.rfcheck = refresh_check;

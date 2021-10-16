@@ -1,15 +1,26 @@
 const express = require('express');
 const router = express.Router();
+
 require('dotenv').config();
 
-const db = require('../module/db/user_api');
-
+const db = require('../module/db/sql/user_sql');
 const token = require('../module/token/token');
 const { verifyToken } = require('../module/token/check');
-module.exports = router;
 
-router.get('/about', verifyToken, async (req, res) => {
-    res.json(req.decryption);
+router.get('/check', verifyToken, async (req, res) => {
+    res.json({message: 'error'});
+});
+
+router.post('/sign', async (req, res) => {
+    try{
+        const id = req.body.id;
+        const pw = req.body.pw;
+        const email = req.body.email;
+        db.crAccount(id,pw, email);
+        res.json({message:"success"})
+    }catch (e){
+        res.json({message:"error",data:e})
+    }
 });
 
 router.get('/refresh', verifyToken, async (req, res) => {
@@ -73,6 +84,7 @@ router.get('/login', async (req, res) => {
         res.json({message:"cannot use this api get method"});
     }
 });
+
 router.post('/login', async (req, res) => {
     try{
         const id = req.body.id;
@@ -82,3 +94,5 @@ router.post('/login', async (req, res) => {
         res.json({message:"error",data:e})
     }
 });
+
+module.exports = router;
