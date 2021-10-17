@@ -28,6 +28,23 @@ router.get('/upTask', verifyToken,  function (req,res){
     }catch (e) { res.json({message:'error'}); }
 })
 
+router.get('/getRes', verifyToken, function (req, res){
+    try {
+        const user_code = req.decryption.uid;
+        const md_code = req.query.md_code;
+        db.getRes(user_code, md_code, function (err, data){
+            if(data[0] != undefined){
+                res.json({message:"success", res:data[0].res})
+            }
+            else {
+                res.json({message:"error"})
+            }
+        })
+    } catch (e) {
+        res.json({message:"error"})
+    }
+})
+
 router.get('/profileGet', function(req,res){
     try {
         const uid = token.decryption(req.query.token).uid
@@ -66,10 +83,10 @@ router.get('/taskImgGet', function(req,res){
     }catch (e) { res.render('error')}
 });
 
-router.post('/resUpdate', verifyToken,upload.single('file'), function(req,res){
+router.post('/resUpdate', upload.single('file'), function(req,res){
     const file_name = req.file.filename;
     db.rUpdate(file_name, req.query.task_no, function (err,data){
-        res.render('confirmation', { file:req.file, files:null });
+        res.send("success");
     });
 });
 
