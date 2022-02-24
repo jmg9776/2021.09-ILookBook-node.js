@@ -10,7 +10,7 @@ function mdUpload(name, price, img, text, stock, like, callback){
         query = db.sqlBuilder(query,[name, price, img, text, stock, like]);
 
         db.ExcuteQuery(query,[],function (err, data){
-            return callback(err,data);
+            return;
         });
     }
 }
@@ -24,5 +24,13 @@ function mdGet(id, callback){
     });
 }
 
+function mdListGet(callback){
+    const query = "select md_code, md_name, md_img, md_price from lookbook.lookbook_md_t";
+    db.ExcuteQuery(query, [], function (err, data){
+        return callback(err, data);
+    });
+}
+
 module.exports.mdUp = mdUpload;
 module.exports.mdGet = mdGet;
+module.exports.mdListGet = mdListGet;

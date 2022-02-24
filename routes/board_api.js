@@ -18,7 +18,28 @@ router.get('/mdGet', function(req,res){
         db.mdGet(id, function (err, data){
             if (data[0]!=undefined){
                 res.json({code:id, name:data[0].md_name,
-                    price:data[0].md_price, img:data[0].md_img, text:data[0].md_text, stock:data[0].md_stock, like:data[0].md_like })
+                    price:data[0].md_price, img:data[0].md_img, text:data[0].md_text, stock:data[0].md_stock, like:data[0].md_like})
+            }
+            else res.json({message:"error"})
+        })
+    }catch (e){}
+})
+
+router.get('/mdListGet', function(req,res){
+    const id = req.query.id
+    let r = [];
+    try {
+        db.mdListGet(function (err, data){
+            if (data[0]!=undefined){
+                for (let i=0; i<data.length; i++){
+                    r.push({
+                        code:data[i].md_code,
+                        name:data[i].md_name,
+                        img:data[i].md_img,
+                        price:data[0].md_price
+                    })
+                }
+                res.json({list:r})
             }
             else res.json({message:"error"})
         })

@@ -66,10 +66,10 @@ router.get('/taskImgGet', function(req,res){
     }catch (e) { res.render('error')}
 });
 
-router.post('/resUpdate', verifyToken,upload.single('file'), function(req,res){
+router.post('/resUpdate', upload.single('file'), function(req,res){
     const file_name = req.file.filename;
     db.rUpdate(file_name, req.query.task_no, function (err,data){
-        res.render('confirmation', { file:req.file, files:null });
+        res.send("success");
     });
 });
 
