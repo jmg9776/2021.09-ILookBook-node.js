@@ -1,10 +1,5 @@
 # Express_Template
 
-<h3>백앤드 개발 공부를 하면서 만든 Express Backend 템플릿입니다.<br>
-유용하게 사용하여 주셨으면 좋겠습니다.</h3>
-간단한 설명은 documents폴더를 참고해주세요.<br>
-Express와 vue의 연동을 가정하고 만들었습니다.<br>
-
 vue project git : https://github.com/DARU970706/vue_template
 <h2>Need to install</h2>
 npm install cors<br>
@@ -19,8 +14,6 @@ if you got error no : -13 then<br>
 try this : sudo npm install
 
 Please check .env setting
-
-<h3>License : Mit</h3>
 
 Api Test : .env file develop="true"
 <br>AccessToken : http://localhost:3000/user/refresh?token= <br>
