@@ -1,7 +1,8 @@
-# 가상시착 서비스 I Lookbook의 비즈니스 코드입니다.
+# 가상시착 서비스 I Lookbook
 
 이 프로젝트는 호서대학교 해커톤 경진대회에서 출품된 작품입니다.
 GAN을 이용하여 사용자가 시착을 통해서 보다 나은 구매 만족도를 제공하도록 하는 서비스이며, https://github.com/minar09/ACGPN 을 AI모델로 사용하였습니다.
+프론트는 Vue.js를 이용해 구성하였고, 백엔드는 Node.js Express를 이용해 구현하였습니다.
 
 <img width="520" alt="image" src="https://user-images.githubusercontent.com/82408159/216330994-d3362423-9326-498b-88e5-9e73d2fa7900.png">
 
